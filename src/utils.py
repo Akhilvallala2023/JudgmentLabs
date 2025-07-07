@@ -122,9 +122,10 @@ def format_match_for_display(match: Dict[str, Any]) -> str:
     """
     job = match['job']
     
-    # Format strengths and gaps as bullet points
-    strengths_text = "\n".join([f"• {s}" for s in match.get('strengths', [])])
-    gaps_text = "\n".join([f"• {s}" for s in match.get('gaps', [])])
+    # Get job description (truncate if too long)
+    description = job.get('description', 'No description available')
+    if len(description) > 500:
+        description = description[:500] + "..."
     
     # Build the formatted text
     formatted = f"""
@@ -134,11 +135,8 @@ Job Title: {job['title']}
 Company: {job.get('company', 'Unknown')}
 Link: {job['link']}
 
-STRENGTHS:
-{strengths_text if strengths_text else "None identified"}
-
-GAPS:
-{gaps_text if gaps_text else "None identified"}
+JOB DESCRIPTION:
+{description}
 """
     
     return formatted.strip()
